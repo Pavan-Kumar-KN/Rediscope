@@ -1,0 +1,30 @@
+{
+  "name": "Rediscope",
+  "version": "1.0.0",
+  "description": "A lightweight, developer-friendly terminal UI for Redis — inspect keys, browse data types, monitor pub/sub channels, and manage your Redis instance without leaving the terminal.",
+  "main": "src/server/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/server/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.15"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "ink": "^7.0.3",
+    "ioredis": "^5.10.1",
+    "react": "^19.2.6"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
