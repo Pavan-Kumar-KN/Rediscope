@@ -1,0 +1,1 @@
+rediss://default:gQAAAAAAATwwAAIncDEyODkyOGY1YTE5NjI0ZDY3YWM3MzRkZjlkYjg0YmRiMHAxODA5NDQ@welcome-foal-80944.upstash.io:6379

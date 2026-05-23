@@ -5,10 +5,11 @@ interface InputProps {
     initialValue?: string;
     error?: string;
     succes?: boolean;
+    setScreen?: (state: unknown) => void;
     onSubmit: (uri: string) => void;
 }
 
-export const Input: FC<InputProps> = ({ initialValue = "", error, succes, onSubmit }) => {
+export const Input: FC<InputProps> = ({ initialValue = "", error, succes, setScreen, onSubmit }) => {
     const [input, setInput] = useState<String>(initialValue);
     const [cursorVisible, setCursorVisible] = useState<boolean>(false);
 
@@ -22,6 +23,14 @@ export const Input: FC<InputProps> = ({ initialValue = "", error, succes, onSubm
     useInput((value, key) => {
         if (key.return) {
             onSubmit(input.trim());
+        }
+        else if(key.ctrl && value === 'u') {
+            setInput("");
+        }
+        else if (key.ctrl && value === 'k') {
+            setScreen && setScreen({
+                name: "playground"
+            });
         }
         else if (key.backspace || key.delete) {
             setInput(prev => prev.slice(0, -1))
@@ -59,6 +68,7 @@ export const Input: FC<InputProps> = ({ initialValue = "", error, succes, onSubm
                     succes && (
                         <Box marginTop={1}>
                             <Text color="green">connection Sucessfull !! </Text>
+                            <Text dimColor>Ctrl+K: Playground</Text>
                         </Box>
                     )
                 }
