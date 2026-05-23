@@ -33,15 +33,20 @@ async function saveRedisFile(url: string): Promise<Error | boolean> {
 }
 
 
-async function verifyConfig() : Promise<Error | boolean> {
-    const configPath = path.join(__dirname, "../../", PATHS.REDIS_CONFIG_DIR);
-    const content = await fs.promises.readFile(`${configPath}/${PATHS.REDIS_CONFIG_FILE}`, 'utf-8');
+async function verifyConfig(): Promise<Error | boolean> {
 
-    if (!fs.existsSync(`${configPath}/${PATHS.REDIS_CONFIG_FILE}`) || !fs.existsSync(configPath) || JSON.parse(content).connections.length <= 0) {
-        return false
+
+    try {
+        const configPath = path.join(__dirname, "../../", PATHS.REDIS_CONFIG_DIR);
+        const content = await fs.promises.readFile(`${configPath}/${PATHS.REDIS_CONFIG_FILE}`, 'utf-8');
+        if (!fs.existsSync(`${configPath}/${PATHS.REDIS_CONFIG_FILE}`) || !fs.existsSync(configPath) || JSON.parse(content).connections.length <= 0) {
+            return false
+        }
+
+        return true;
+    } catch (err) {
+        return false;
     }
-    
-    return true;
 }
 
 // saveRedisFile("redis://localhost:6379").then((result) => {

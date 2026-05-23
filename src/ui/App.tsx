@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Input } from './components/Input';
 import { saveRedisFile, verifyConfig } from '@/server/file';
 import { connectToRedis } from '@/server/redis';
-import { Box  , Text} from 'ink';
+import { Box, Text } from 'ink';
 import { verifyURL } from './lib/helper';
 import Loading from './components/Loading';
 import ErrorScreen from './components/Error';
@@ -15,7 +15,7 @@ const App = () => {
 	});
 
 
-	useEffect( () => {
+	useEffect(() => {
 		async function checkConfig() {
 			await getScreen();
 		}
@@ -24,7 +24,7 @@ const App = () => {
 	}, [])
 
 	const getScreen = async () => {
-		const config: boolean | Error  | any = await verifyConfig();
+		const config: boolean | Error | any = await verifyConfig();
 
 		if (config) {
 			setSucces(true);
@@ -32,7 +32,7 @@ const App = () => {
 				name: "playground"
 			});
 		}
-		
+
 
 		else if (config instanceof Error) {
 			setScreen({
@@ -52,12 +52,17 @@ const App = () => {
 
 	const onSubmit = async (uri: string) => {
 
+		if (!verifyURL(uri)) {
+			setError("Invalid Redis URL");
+			setSucces(!succes);
+			return;
+		}
+
 		try {
-			if (!verifyURL(uri)) {
-				setError("Invalid Redis URL");
-				setSucces(!succes);
-				return;
-			}
+
+			setScreen({
+				name: "loading"
+			});
 
 			const res = await saveRedisFile(uri);
 
@@ -66,9 +71,11 @@ const App = () => {
 			}
 
 
-			const conn = await connectToRedis(uri);
+			await connectToRedis(uri);
 
-			setError(JSON.stringify(conn));
+			setScreen({
+				name: "playground"
+			});
 
 			setSucces(true)
 		} catch (err) {
@@ -78,7 +85,7 @@ const App = () => {
 	}
 
 	const renderScreen = () => {
-		switch(screen && screen.name) {
+		switch (screen && screen.name) {
 			case "input":
 				return <Input onSubmit={onSubmit} succes={succes} error={error} setScreen={setScreen} />
 			case "playground":
